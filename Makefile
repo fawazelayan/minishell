@@ -1,6 +1,6 @@
 #  ========================  #
 #							 #
-#  	   -*- PUSH_SWAP -*-	 #
+#  	   -*- MINISHELL -*-	 #
 #							 #
 #  ========================  #
 
@@ -15,17 +15,15 @@ RESET	=	\033[0m
 #  ========================  #
 #	    FILE STRUCTURE		 #
 #  ========================  #
-NAME		=	push_swap
+NAME		=	minishell
 
 LIB			=	lib
 LIBFT_DR	=	libft
-PRINTF_DR	=	printf
 SRCS_DR		=	srcs
 OBJS_DR		=	objs
 INC_DR		=	incs
 
 LIBFT_INC	= $(LIB)/$(LIBFT_DR)/$(INC_DR)
-PRINTF_INC	= $(LIB)/$(PRINTF_DR)/$(INC_DR)
 
 #  ========================  #
 #	      COMMANDS			 #
@@ -41,7 +39,6 @@ SRCS	=	$(shell find $(SRCS_DR) -name '*.c')
 OBJS	=	$(patsubst $(SRCS_DR)/%.c,$(OBJS_DR)/%.o,$(SRCS))
 
 LIBFT	=	$(LIB)/$(LIBFT_DR)/libft.a
-PRINTF	=	$(LIB)/$(PRINTF_DR)/printf.a
 
 #  ========================  #
 #	   COMPILATION RULES	 #
@@ -49,7 +46,6 @@ PRINTF	=	$(LIB)/$(PRINTF_DR)/printf.a
 CC		=	cc
 CFLAGS	=	-Wall -Wextra -Werror \
 			-I$(LIBFT_INC) \
-			-I$(PRINTF_INC) \
 			-I$(INC_DR)
 
 #  ========================  #
@@ -69,12 +65,12 @@ $(OBJS_DR)/%.o	:	$(SRCS_DR)/%.c
 #  ========================  #
 #		  BUILDING			 #
 #  ========================  #
-$(NAME)		:	$(LIBFT) $(PRINTF) $(OBJS)
+$(NAME)		:	$(LIBFT) $(OBJS)
 	@if [ "$(MAKECMDGOALS)" != "re" ]; then \
-		echo "$(PURPLE)🔗 Creating push_swap executable...\n$(RESET)"; \
+		echo "$(PURPLE)🔗 Creating mini-hell...\n$(RESET)"; \
 	fi
 	@$(CC) $(CFLAGS) $(OBJS) \
-	$(LIBFT) $(PRINTF) -o $(NAME)
+	$(LIBFT) -o $(NAME)
 
 
 $(LIBFT)	:
@@ -83,10 +79,27 @@ $(LIBFT)	:
 	else \
 		echo "$(GREEN)\n🔄 Rebuilding everything...$(RESET)\n"; \
 	fi
-	@$(MAKE) $(LIB)/$(LIBFT_DR
+	@$(MAKE) $(LIB)/$(LIBFT_DR)
 
+#  ========================  #
+#		  CLEANING			 #
+#  ========================  #
+clean	:
+	@if [ "$(MAKECMDGOALS)" != "fclean" ] && [ "$(MAKECMDGOALS)" != "re" ]; then \
+		echo "$(RED)\n🧹 Cleaning object files...\n$(RESET)"; \
+	fi
+	@$(RM) $(OBJS_DR)
+	@$(MAKE) $(LIB)/$(LIBFT_DR) clean
 
+fclean	:	clean
+	@if [ "$(MAKECMDGOALS)" != "re" ]; then \
+		echo "$(RED)\n💥 Cleaning everything...\n$(RESET)"; \
+	fi
+	@$(RM) $(NAME)
+	@$(MAKE) $(LIB)/$(LIBFT_DR) fclean
 
-	\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
-	this will be pushed to the repository 
+#  ========================  #
+#							 #
+#  	     -*- END -*-		 #
+#							 #
+#  ========================	 #
