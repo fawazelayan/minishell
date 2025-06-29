@@ -83,36 +83,10 @@ $(LIBFT)	:
 	else \
 		echo "$(GREEN)\n🔄 Rebuilding everything...$(RESET)\n"; \
 	fi
-	@$(MAKE) $(LIB)/$(LIBFT_DR)
+	@$(MAKE) $(LIB)/$(LIBFT_DR
 
 
-$(PRINTF)	:
-	@if [ "$(MAKECMDGOALS)" != "re" ]; then \
-		echo "$(GREEN)📦 Creating Printf...$(RESET)"; \
-	fi
-	@$(MAKE) $(LIB)/$(PRINTF_DR)
 
-#  ========================  #
-#		  CLEANING			 #
-#  ========================  #
-clean	:
-	@if [ "$(MAKECMDGOALS)" != "fclean" ] && [ "$(MAKECMDGOALS)" != "re" ]; then \
-		echo "$(RED)\n🧹 Cleaning object files...\n$(RESET)"; \
-	fi
-	@$(RM) $(OBJS_DR)
-	@$(MAKE) $(LIB)/$(LIBFT_DR) clean
-	@$(MAKE) $(LIB)/$(PRINTF_DR) clean
+	\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-fclean	:	clean
-	@if [ "$(MAKECMDGOALS)" != "re" ]; then \
-		echo "$(RED)\n💥 Cleaning everything...\n$(RESET)"; \
-	fi
-	@$(RM) $(NAME)
-	@$(MAKE) $(LIB)/$(LIBFT_DR) fclean
-	@$(MAKE) $(LIB)/$(PRINTF_DR) fclean
-
-#  ========================  #
-#							 #
-#  	     -*- END -*-		 #
-#							 #
-#  ========================	 #
+	this will be pushed to the repository 
