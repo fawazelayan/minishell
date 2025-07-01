@@ -18,7 +18,7 @@ int	main(void)
 
 	while (1)
 	{
-		input = readline("minishell$ ");
+		input = readline("mini-hell$ ");
 		if (!input) // Ctrl+D
 			break;
 		if (*input)
