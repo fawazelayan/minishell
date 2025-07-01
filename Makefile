@@ -48,6 +48,8 @@ CFLAGS	=	-Wall -Wextra -Werror \
 			-I$(LIBFT_INC) \
 			-I$(INC_DR)
 
+RLFLAGS	=	-lreadline
+
 #  ========================  #
 #			RULES			 #
 #  ========================  #
@@ -70,7 +72,7 @@ $(NAME)		:	$(LIBFT) $(OBJS)
 		echo "$(PURPLE)🔗 Creating mini-hell...\n$(RESET)"; \
 	fi
 	@$(CC) $(CFLAGS) $(OBJS) \
-	$(LIBFT) -o $(NAME)
+	$(LIBFT) $(RLFLAGS) -o $(NAME)
 
 
 $(LIBFT)	:
