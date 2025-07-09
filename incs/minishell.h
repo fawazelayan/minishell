@@ -23,5 +23,48 @@
 #include <fcntl.h>	//	open
 #include <errno.h>	// error status
 #include "libft.h"	// libft
+#include <stdbool.h>
 
+volatile sig_atomic_t g_sig = 0;
+typedef struct s_data	t_data;
+typedef enum e_redir_type t_redir_type;
+
+enum e_redir_type
+{
+	IN,
+	OUT,
+	HEREDOC,
+	APPEND
+};
+
+typedef struct s_redir
+{
+	int		type;
+	char	*file;
+}	t_redir;
+
+typedef struct s_exp
+{
+	char	**key;
+	char	**value;
+	int		is_null;
+}	t_exp;
+
+typedef struct s_cmd
+{
+	char	**tokens;
+	t_redir *redir;
+	int		nb_redir;
+	bool	is_pipe;
+	struct s_cmd	*next;
+}	t_cmd;
+
+struct s_data
+{
+	char	**env;
+	char	**exp;
+	t_cmd	cmd;
+	int		exit_status;
+	char	*cmd_line;
+};
 #endif

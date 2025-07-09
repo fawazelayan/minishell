@@ -12,22 +12,7 @@
 
 #include "minishell.h"
 
-int	main(void)
+int	main(int ac, char **av, char **envp)
 {
-	char *input;
-
-	while (1)
-	{
-		input = readline("mini-hell$ ");
-		if (!input) // Ctrl+D
-			break;
-		if (*input)
-			add_history(input);
-
-		printf("You typed: %s\n", input);
-		free(input);
-	}
-	rl_clear_history();
-	printf("exit\n");
-	return (0);
+	t_data data;
 }
