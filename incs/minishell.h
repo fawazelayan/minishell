@@ -9,62 +9,77 @@
 /*   Updated: 2025/07/01 20:45:48 by felayan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-#include <readline/readline.h>	//readline funcs
-#include <readline/history.h>	//history funcs
+#include <readline/readline.h>	// readline funcs
+#include <readline/history.h>	// history funcs
+#include <sys/wait.h>	// wait, waitpid
+#include <stdbool.h>	// bool def
 #include <unistd.h>	// a lot of unix funcs
 #include <stdlib.h>	// malloc, free
-#include <stdio.h>	// printf
-#include <sys/wait.h>	// wait, waitpid
 #include <signal.h>	// signal handling
+#include <stdio.h>	// printf
 #include <fcntl.h>	//	open
 #include <errno.h>	// error status
 #include "libft.h"	// libft
-#include <stdbool.h>
 
-volatile sig_atomic_t g_sig = 0;
+typedef enum e_redir_type	t_redir_type;
+
+typedef struct s_redir	t_redir;
 typedef struct s_data	t_data;
-typedef enum e_redir_type t_redir_type;
+typedef struct s_exp	t_exp;
+typedef struct s_env	t_env;
+typedef struct s_cmd	t_cmd;
+
+volatile sig_atomic_t	g_sig = 0;
 
 enum e_redir_type
 {
-	IN,
-	OUT,
 	HEREDOC,
-	APPEND
+	APPEND,
+	NONE,
+	OUT,
+	IN
 };
 
-typedef struct s_redir
+struct s_redir
 {
-	int		type;
 	char	*file;
-}	t_redir;
+	int		type;
+};
 
-typedef struct s_exp
+struct s_exp
 {
-	char	**key;
+	bool	*is_null;
 	char	**value;
-	int		is_null;
-}	t_exp;
+	char	**key;
+};
 
-typedef struct s_cmd
+struct s_env
 {
+	char	**value;
+	char	**key;
+};
+
+struct s_cmd
+{
+	pid_t	pid;
 	char	**tokens;
-	t_redir *redir;
-	int		nb_redir;
+	int		redir_count;
 	bool	is_pipe;
-	struct s_cmd	*next;
-}	t_cmd;
+	t_redir	*redir;
+	t_cmd	*next;
+};
 
 struct s_data
 {
-	char	**env;
-	char	**exp;
-	t_cmd	cmd;
+	char	**parse_tokens;
 	int		exit_status;
 	char	*cmd_line;
+	t_env	env;
+	t_exp	exp;
+	t_cmd	*cmd;
 };
+
 #endif
