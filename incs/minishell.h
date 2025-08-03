@@ -12,27 +12,31 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-#include <readline/readline.h>	// readline funcs
-#include <readline/history.h>	// history funcs
-#include <sys/wait.h>	// wait, waitpid
-#include <stdbool.h>	// bool def
-#include <unistd.h>	// a lot of unix funcs
-#include <stdlib.h>	// malloc, free
-#include <signal.h>	// signal handling
-#include <stdio.h>	// printf
-#include <fcntl.h>	//	open
-#include <errno.h>	// error status
-#include "libft.h"	// libft
+# define MALLOC_FAILURE -42
+# define SUCCESS 1
+# define FAIL -1
+
+# include <readline/readline.h>	// readline funcs
+# include <readline/history.h>	// history funcs
+# include <sys/wait.h>	// wait, waitpid
+# include <stdbool.h>	// bool def
+# include <unistd.h>	// a lot of unix funcs
+# include <stdlib.h>	// malloc, free
+# include <signal.h>	// signal handling
+# include <stdio.h>		// printf
+# include <fcntl.h>		//	open
+# include <errno.h>		// error status
+# include "libft.h"		// libft
 
 typedef enum e_redir_type	t_redir_type;
 
-typedef struct s_redir	t_redir;
-typedef struct s_data	t_data;
-typedef struct s_exp	t_exp;
-typedef struct s_env	t_env;
-typedef struct s_cmd	t_cmd;
+typedef struct s_redir		t_redir;
+typedef struct s_data		t_data;
+typedef struct s_exp		t_exp;
+typedef struct s_env		t_env;
+typedef struct s_cmd		t_cmd;
 
-volatile sig_atomic_t	g_sig = 0;
+extern volatile sig_atomic_t	g_sig;
 
 enum e_redir_type
 {
@@ -49,17 +53,11 @@ struct s_redir
 	int		type;
 };
 
-struct s_exp
-{
-	bool	*is_null;
-	char	**value;
-	char	**key;
-};
-
 struct s_env
 {
 	char	**value;
 	char	**key;
+	int		entries;
 };
 
 struct s_cmd
@@ -78,8 +76,16 @@ struct s_data
 	int		exit_status;
 	char	*cmd_line;
 	t_env	env;
-	t_exp	exp;
 	t_cmd	*cmd;
 };
+
+void	init_env(t_env *env, char **envp);\
+
+void	print_env(const t_env *env);
+void	print_export(const t_env *env);
+
+void	start_shell(t_data *dt, char **envp);
+
+void	clean_env(t_env *env, int count, int exit_status);
 
 #endif

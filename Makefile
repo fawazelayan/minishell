@@ -23,7 +23,7 @@ SRCS_DR		=	srcs
 OBJS_DR		=	objs
 INC_DR		=	incs
 
-LIBFT_INC	= $(LIB)/$(LIBFT_DR)/$(INC_DR)
+LIBFT_INC	=	$(LIB)/$(LIBFT_DR)/$(INC_DR)
 
 #  ========================  #
 #	      COMMANDS			 #
