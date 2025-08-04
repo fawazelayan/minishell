@@ -7,7 +7,7 @@
 // 	init_env(&dt -> env, envp);
 // 	while (42)
 // 	{
-// 		line = readline("mini-hell$ ");
+// 		line = readline("forking-hell$ ");
 // 		if (!line)
 // 		{
 // 			printf("exit\n");
@@ -17,7 +17,8 @@
 // 			add_history(line);
 // 		if (tokenizer(line, &dt)) // Sara
 // 			executioner(&dt); // Fawaz
-// 		free_parse_tokens(&dt -> parse_tokens);
+// 		free_cmds(dt -> cmd);
+// 		free_parse_tokens(dt -> parse_tokens);
 // 		free(line);
 // 	}
 // }

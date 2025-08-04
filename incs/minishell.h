@@ -79,7 +79,7 @@ struct s_data
 	t_cmd	*cmd;
 };
 
-void	init_env(t_env *env, char **envp);\
+void	init_env(t_env *env, char **envp);
 
 void	print_env(const t_env *env);
 void	print_export(const t_env *env);
