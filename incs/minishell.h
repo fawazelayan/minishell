@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: felayan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: sjaber <sjaber@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 20:45:25 by felayan           #+#    #+#             */
-/*   Updated: 2025/07/01 20:45:48 by felayan          ###   ########.fr       */
+/*   Updated: 2025/08/05 18:53:36 by sjaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -38,6 +39,12 @@ typedef struct s_cmd		t_cmd;
 
 extern volatile sig_atomic_t	g_sig;
 
+typedef struct s_buffer {
+    char    *data;
+    size_t  capacity;
+    size_t  length;
+} t_buffer; // added new
+
 enum e_redir_type
 {
 	HEREDOC,
@@ -46,6 +53,12 @@ enum e_redir_type
 	OUT,
 	IN
 };
+
+// typedef struct s_tokens {
+//     char    **tokens;
+//     size_t  count;
+//     size_t  capacity;
+// } t_tokens;
 
 struct s_redir
 {
@@ -66,6 +79,7 @@ struct s_cmd
 	char	**tokens;
 	int		redir_count;
 	bool	is_pipe;
+	//int	pipe_count;  added new idk
 	t_redir	*redir;
 	t_cmd	*next;
 };
@@ -74,7 +88,7 @@ struct s_data
 {
 	char	**parse_tokens;
 	int		exit_status;
-	char	*cmd_line;
+	// char	*cmd_line; delete later
 	t_env	env;
 	t_cmd	*cmd;
 };
@@ -85,7 +99,7 @@ void	print_env(const t_env *env);
 void	print_export(const t_env *env);
 
 void	start_shell(t_data *dt, char **envp);
-
+int	ft_realloc(t_buffer *buffer, size_t new_capacity); //new
 void	clean_env(t_env *env, int count, int exit_status);
 
 #endif
