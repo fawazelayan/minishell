@@ -3,82 +3,61 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjaber <sjaber@student.42.fr>              +#+  +:+       +#+        */
+/*   By: felayan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/05 15:12:58 by sjaber            #+#    #+#             */
-/*   Updated: 2025/08/05 17:21:42 by sjaber           ###   ########.fr       */
+/*   Created: 2025/08/20 00:45:12 by felayan           #+#    #+#             */
+/*   Updated: 2025/08/20 00:45:14 by felayan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "minishell.h"
 
-int init_buffer(t_buffer *buffer, size_t initial_capacity)
+static int	count_tokens(const char *input)
 {
-        if(!buffer)
-                return 0;
-        if(initial_capacity == 0)
-                initial_capacity = 32;
-        buffer->data = malloc(initial_capacity);
-        if(!buffer->data)
-        {
-                buffer->capacity = 0;
-                buffer->length = 0;
-                return 0;
-        }
-        buffer->capacity = initial_capacity;
-        buffer->length = 0;
-        return 1;
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0;
+	// while (input[i])
+	// {
+			// TODO
+	// }
 }
 
-int buffer_append_char(t_buffer *buffer, char c)
+// static void	add_token(t_data *dt, int loc)
+// {
+		// TODO
+// }
+
+int	split_into_tokens(const char *input, t_data *dt)
 {
-    if(!buffer || !buffer->data)
-        return 0;
-    if(buffer->length + 1 >= buffer->capacity)
-    {
-        size_t new_capacity = buffer->capacity * 2;
-        if (!ft_realloc(buffer, new_capacity))
-            return 0;
-    }
-    buffer->data[buffer->length] = c;
-    buffer->length++;
-    return 1;
+	int	i;
+	int	j;
+
+	j = 0;
+	i = 0;
+	dt -> input_tokens = malloc(sizeof(char *) * (count_tokens(input) + 1));
+	if (!dt -> input_tokens)
+		clean_data(dt, MALLOC_FAILURE);
+	// while (input[i])
+	// {
+			// TODO
+	// }
 }
 
-char *buffer_to_token(t_buffer *buffer)
+int	tokenizer(const char *input, t_data *dt)
 {
-    if (!buffer || !buffer->data || buffer->length == 0)
-        return NULL;
+	int		i;
+	bool	is_closed;
 
-    char *token = malloc(buffer->length + 1);
-    if (!token)
-        return NULL;
-
-    size_t i = 0;
-    while (i < buffer->length)
-    {
-        token[i] = buffer->data[i];
-        i++;
-    }
-    token[buffer->length] = '\0';
-
-    return token;
-}
-
-void buffer_reset(t_buffer *buffer)
-{
-    if (buffer && buffer->data)
-    {
-        buffer->length = 0;
-    }
-}
-void buffer_free(t_buffer *buffer)
-{
-    if (buffer && buffer->data)
-    {
-        free(buffer->data);
-        buffer->data = NULL;
-        buffer->capacity = 0;
-        buffer->length = 0;
-    }
+	i = skip_starting_whitesp(input);
+	is_closed = is_closed_quotes(input, i);
+	if (is_closed)
+		split_into_tokens(input + i, dt);
+	if (syntax_check(dt, !is_closed))
+	{
+		dt -> exit_status = 2;
+		return (SYNTAX_ERR);
+	}
+	return (0);
 }

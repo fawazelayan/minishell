@@ -15,7 +15,7 @@
 
 # define MALLOC_FAILURE -42
 # define SUCCESS 0
-# define FAIL -1
+# define SYNTAX_ERR -1
 
 # include <readline/readline.h>	// readline funcs
 # include <readline/history.h>	// history funcs
