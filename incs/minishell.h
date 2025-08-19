@@ -14,7 +14,7 @@
 # define MINISHELL_H
 
 # define MALLOC_FAILURE -42
-# define SUCCESS 1
+# define SUCCESS 0
 # define FAIL -1
 
 # include <readline/readline.h>	// readline funcs
@@ -39,67 +39,62 @@ typedef struct s_cmd		t_cmd;
 
 extern volatile sig_atomic_t	g_sig;
 
-typedef struct s_buffer {
-    char    *data;
-    size_t  capacity;
-    size_t  length;
-} t_buffer; // added new
-
 enum e_redir_type
 {
 	HEREDOC,
 	APPEND,
-	NONE,
 	OUT,
 	IN
 };
 
-// typedef struct s_tokens {
-//     char    **tokens;
-//     size_t  count;
-//     size_t  capacity;
-// } t_tokens;
-
 struct s_redir
 {
-	char	*file;
-	int		type;
+	char			*file;
+	t_redir_type	type;
 };
 
 struct s_env
 {
+	int		entries;
 	char	**value;
 	char	**key;
-	int		entries;
 };
 
 struct s_cmd
 {
-	pid_t	pid;
-	char	**tokens;
 	int		redir_count;
-	bool	is_pipe;
-	//int	pipe_count;  added new idk
+	int		pipe_fd[2];
+	char	**tokens;
 	t_redir	*redir;
 	t_cmd	*next;
+	pid_t	pid;
 };
 
 struct s_data
 {
-	char	**parse_tokens;
+	char	**input_tokens;
 	int		exit_status;
-	// char	*cmd_line; delete later
-	t_env	env;
+	int		cmd_count;
 	t_cmd	*cmd;
+	t_env	env;
 };
 
-void	init_env(t_env *env, char **envp);
-
-void	print_env(const t_env *env);
-void	print_export(const t_env *env);
-
 void	start_shell(t_data *dt, char **envp);
-int	ft_realloc(t_buffer *buffer, size_t new_capacity); //new
+
+int		split_into_tokens(const char *input, t_data *dt);
+int 	tokenizer(const char *input, t_data *dt);
+
+int		skip_starting_whitesp(const char *s);
+bool	is_empty(const char *s);
+bool	is_redir(char *token);
+bool	is_pipe(char *token);
+
+int		syntax_check(const char **tokens, bool quotes_err);
+bool	is_closed_quotes(const char *input, int loc);
+
 void	clean_env(t_env *env, int count, int exit_status);
+void	init_env(t_env *env, char **envp);
+void	print_export(const t_env *env);
+void	print_env(const t_env *env);
 
 #endif

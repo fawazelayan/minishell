@@ -7,18 +7,19 @@
 // 	init_env(&dt -> env, envp);
 // 	while (42)
 // 	{
+// 		dt -> cmd_count = 0;
 // 		line = readline("forking-hell$ ");
 // 		if (!line)
 // 		{
 // 			printf("exit\n");
 // 			break ;
 // 		}
-// 		if (*line)
+// 		if (!is_empty(line))
 // 			add_history(line);
-// 		if (tokenizer(line, &dt)) // Sara
-// 			executioner(&dt); // Fawaz
+// 		if (!is_empty(line) && !tokenizer(line, dt))    FAWAz: removed & from dt
+// 			executioner(dt);
 // 		free_cmds(dt -> cmd);
-// 		free_parse_tokens(dt -> parse_tokens);
+// 		free_tokens(dt -> input_tokens);
 // 		free(line);
 // 	}
 // }
