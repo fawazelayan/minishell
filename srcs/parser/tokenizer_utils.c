@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token_utils.c                                      :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: felayan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: sjaber <sjaber@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/20 00:45:35 by felayan           #+#    #+#             */
-/*   Updated: 2025/08/20 00:45:39 by felayan          ###   ########.fr       */
+/*   Created: 2025/08/05 15:24:06 by sjaber            #+#    #+#             */
+/*   Updated: 2025/08/05 15:27:15 by sjaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -27,7 +27,7 @@ bool	is_empty(const char *s)
 	return (true);
 }
 
-int	skip_starting_whitesp(const char *s)
+int	skip_whitesp(const char *s)
 {
 	int	i;
 
@@ -39,18 +39,27 @@ int	skip_starting_whitesp(const char *s)
 
 bool	is_pipe(const char *token)
 {
-	return (!ft_strncmp(token, "|", 2));
+	return (!ft_strncmp(token, "|", 1));
 }
 
 bool	is_redir(const char *token)
 {
-	if (!ft_strncmp(token, ">>", 3))
+	if (!ft_strncmp(token, ">>", 2))
 		return (true);
-	if (!ft_strncmp(token, "<<", 3))
+	if (!ft_strncmp(token, "<<", 2))
 		return (true);
-	if (!ft_strncmp(token, ">", 2))
+	if (!ft_strncmp(token, ">", 1))
 		return (true);
-	if (!ft_strncmp(token, "<", 2))
+	if (!ft_strncmp(token, "<", 1))
 		return (true);
 	return (false);
+}
+
+bool	is_word(const char *token)
+{
+	if (is_pipe(token) || is_redir(token)
+		|| token[0] == '\'' || token[0] == '\"'
+		|| token[0] == ' ' || (token[0] >= 9 && token[0] <= 13))
+		return (false);
+	return (true);
 }
