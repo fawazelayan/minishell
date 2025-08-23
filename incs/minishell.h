@@ -29,17 +29,27 @@
 # include <errno.h>		// error status
 # include "libft.h"		// libft
 
-typedef enum e_redir_type	t_redir_type;
-
+typedef struct s_tokenizer	t_tokenizer;
 typedef struct s_redir		t_redir;
 typedef struct s_data		t_data;
 typedef struct s_exp		t_exp;
 typedef struct s_env		t_env;
 typedef struct s_cmd		t_cmd;
 
+typedef enum e_rdr	t_rdr;
+typedef enum e_tk	t_tk;
+typedef enum e_qt	t_qt;
+
 extern volatile sig_atomic_t	g_sig;
 
-enum e_redir_type
+enum e_tk
+{
+	OPERATOR,
+	WORD,
+	DOC
+};
+
+enum e_rdr
 {
 	HEREDOC,
 	APPEND,
@@ -47,10 +57,26 @@ enum e_redir_type
 	IN
 };
 
+enum e_qt
+{
+	SINGLE,
+	DOUBLE,
+	NONE
+};
+
+struct s_tokenizer
+{
+	bool			is_expandable;
+	t_qt			quote_type;
+	t_tk			token_type;
+	char			*token;
+	t_tokenizer		*next;
+};
+
 struct s_redir
 {
 	char			*file;
-	t_redir_type	type;
+	t_rdr			type;
 };
 
 struct s_env
@@ -72,24 +98,33 @@ struct s_cmd
 
 struct s_data
 {
-	char	**input_tokens;
-	int		exit_status;
-	int		cmd_count;
-	t_cmd	*cmd;
-	t_env	env;
+	int			exit_status;
+	int			cmd_count;
+	t_tokenizer	*tokens;
+	t_cmd		*cmds;
+	t_env		env;
 };
 
 void	start_shell(t_data *dt, char **envp);
+void	clean_data(t_data *dt, int status);
 
-int		split_into_tokens(const char *input, t_data *dt);
 int 	tokenizer(const char *input, t_data *dt);
 
-int		skip_starting_whitesp(const char *s);
+int		skip_whitesp(const char *s);
 bool	is_empty(const char *s);
-bool	is_redir(char *token);
-bool	is_pipe(char *token);
+bool	is_redir(const char *token);
+bool	is_pipe(const char *token);
+bool	is_word(const char *token);
 
-int		syntax_check(const char **tokens, bool quotes_err);
+void	add_token(t_data *dt, t_tk t_type, t_qt q_type, char *token, bool exp);
+void	add_double_quotes(t_data *dt, const char *input, int *i);
+void	add_single_quotes(t_data *dt, const char *input, int *i);
+void	add_operator(t_data *dt, const char *input, int *i);
+void	add_word(t_data *dt, const char * input, int *i);
+
+void	print_tokens(t_tokenizer *tokens);
+void	clean_tokens(t_tokenizer *tokens);
+int		syntax_check(t_tokenizer *tokens, bool quotes_err);
 bool	is_closed_quotes(const char *input, int loc);
 
 void	clean_env(t_env *env, int count, int exit_status);

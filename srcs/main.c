@@ -52,11 +52,14 @@ int	main(int ac, char **av, char **envp)
 			break ;
 		if (!(input[0] == '\0' || is_empty(input)))
 			add_history(input);
-		//tokenizer(input, &data);
+		tokenizer(input, &data);
 		if (!ft_strncmp(input, "export", 6))
 			print_export(&env);
 		else if (!ft_strncmp(input, "env", 3))
 			print_env(&env);
+		print_tokens(data.tokens);
+		clean_tokens(data.tokens);
+		data.tokens = NULL;
 		free(input);
 	}
 	clean_env(&env, env.entries, 0);
