@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokens_add_utils.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: felayan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/02 23:05:47 by felayan           #+#    #+#             */
+/*   Updated: 2025/09/02 23:05:47 by felayan          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "minishell.h"
 
 t_tokenizer	*get_last_token(t_tokenizer *tokens)
@@ -9,17 +20,17 @@ t_tokenizer	*get_last_token(t_tokenizer *tokens)
 	return (tokens);
 }
 
-void	add_token(t_data *dt, t_tk t_type, t_qt q_type, char *token, bool exp)
+void	add_token(t_data *dt, t_tk t_type, char *token, bool exp)
 {
 	t_tokenizer	*new;
 	t_tokenizer	*last;
 
+	last = NULL;
 	new = malloc(sizeof(t_tokenizer));
 	if (!new)
 		clean_data(dt, MALLOC_FAILURE);
 	new -> token = token;
 	new -> token_type = t_type;
-	new -> quote_type = q_type;
 	new -> is_expandable = exp;
 	new -> next = NULL;
 	if (!dt -> tokens)
@@ -28,25 +39,5 @@ void	add_token(t_data *dt, t_tk t_type, t_qt q_type, char *token, bool exp)
 	{
 		last = get_last_token(dt -> tokens);
 		last -> next = new;
-	}
-}
-
-void	print_tokens(t_tokenizer *tokens)
-{
-	while (tokens)
-	{
-		printf("%s %d %d %d\n", tokens -> token, tokens -> quote_type, tokens -> token_type, tokens -> is_expandable);
-		tokens = tokens -> next;
-	}
-}
-void	clean_tokens(t_tokenizer *tokens)
-{
-	t_tokenizer *current = tokens;
-	while (current)
-	{
-		current = tokens -> next;
-		free(tokens -> token);
-		free(tokens);
-		tokens = current;
 	}
 }

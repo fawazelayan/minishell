@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   syntax_check.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: felayan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/02 23:06:04 by felayan           #+#    #+#             */
+/*   Updated: 2025/09/02 23:06:07 by felayan          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "minishell.h"
 
 bool	is_closed_quotes(const char *input, int loc)
@@ -37,7 +48,7 @@ static bool	is_pipe_error(t_tokenizer *tokens, t_tokenizer **tr)
 		if ((is_pipe(tokens -> token) && is_pipe(tokens -> next -> token))
 			|| (is_redir(tokens -> token) && is_pipe(tokens -> next -> token)))
 		{
-			*tr = tokens;
+			*tr = tokens -> next;
 			return (true);
 		}
 		tokens = tokens -> next;
@@ -55,11 +66,9 @@ static bool	is_redir_error(t_tokenizer *tokens, bool *is_new, t_tokenizer **tr)
 	*is_new = false;
 	while (tokens && tokens -> next)
 	{
-		if (is_redir(tokens -> token)
-			&& (is_redir(tokens -> next -> token)
-				|| is_pipe(tokens -> next -> token)))
+		if (is_redir(tokens -> token) && is_redir(tokens -> next -> token))
 		{
-			*tr = tokens;
+			*tr = tokens -> next;
 			return (true);
 		}
 		tokens = tokens -> next;
@@ -88,29 +97,30 @@ static void	print_syntax_error(char *token, bool quotes_err, bool is_new)
 	}
 }
 
-int	syntax_check(t_tokenizer *tokens, bool quotes_err)	// TODO PERROR
+int	syntax_check(t_tokenizer *tokens, bool quotes_err)
 {
 	bool		is_newline_err;
 	t_tokenizer	*tr;
 
+	tr = NULL;
 	is_newline_err = false;
 	if (quotes_err)
 	{
 		print_syntax_error(NULL, true, false);
-		return (-1);
+		return (SYNTAX_ERR);
 	}
 	else if (is_pipe_error(tokens, &tr))
 	{
 		print_syntax_error(tr -> token, false, false);
-		return (-1);
+		return (SYNTAX_ERR);
 	}
 	else if (is_redir_error(tokens, &is_newline_err, &tr))
 	{
 		if (is_newline_err)
 			print_syntax_error("newline", false, true);
 		else
-			print_syntax_error(tr -> next -> token, false, false);
-		return (-1);
+			print_syntax_error(tr -> token, false, false);
+		return (SYNTAX_ERR);
 	}
 	return (0);
 }

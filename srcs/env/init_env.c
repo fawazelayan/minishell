@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_env.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: felayan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/02 23:10:14 by felayan           #+#    #+#             */
+/*   Updated: 2025/09/02 23:10:15 by felayan          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "minishell.h"
 
 static int	count_env_entries(char **envp)
@@ -26,6 +37,7 @@ static void	copy_env(t_env *env, char **envp)
 	int		splitted;
 
 	i = 0;
+	splitted = 0;
 	while (i < env -> entries)
 	{
 		splitted = split_env(envp[i]);

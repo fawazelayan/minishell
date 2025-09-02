@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokenizer.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: felayan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/02 23:04:51 by felayan           #+#    #+#             */
+/*   Updated: 2025/09/02 23:04:53 by felayan          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "minishell.h"
 
 void	split_into_tokens(const char *input, t_data *dt)
@@ -29,10 +40,10 @@ int	tokenizer(const char *input, t_data *dt)
 	is_closed = is_closed_quotes(input, i);
 	if (is_closed)
 		split_into_tokens(input + i, dt);
-	if (syntax_check(dt -> tokens, !is_closed))  // TODO for linked list
+	if (syntax_check(dt -> tokens, !is_closed))
 	{
 		dt -> exit_status = 2;
-		return (-1);
+		return (SYNTAX_ERR);
 	}
 	return (0);
 }
