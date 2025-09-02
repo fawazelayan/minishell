@@ -122,5 +122,5 @@ int	syntax_check(t_tokenizer *tokens, bool quotes_err)
 			print_syntax_error(tr -> token, false, false);
 		return (SYNTAX_ERR);
 	}
-	return (0);
+	return (SUCCESS);
 }

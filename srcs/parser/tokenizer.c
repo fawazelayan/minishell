@@ -45,5 +45,5 @@ int	tokenizer(const char *input, t_data *dt)
 		dt -> exit_status = 2;
 		return (SYNTAX_ERR);
 	}
-	return (0);
+	return (SUCCESS);
 }

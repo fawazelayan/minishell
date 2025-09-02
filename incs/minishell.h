@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sjaber <sjaber@student.42.fr>              +#+  +:+       +#+        */
+/*   By: felayan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/01 20:45:25 by felayan           #+#    #+#             */
-/*   Updated: 2025/08/05 18:53:36 by sjaber           ###   ########.fr       */
+/*   Created: 2025/09/03 00:12:29 by felayan           #+#    #+#             */
+/*   Updated: 2025/09/03 00:12:31 by felayan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -98,6 +97,7 @@ struct s_data
 	t_cmd		*cmds;
 	t_env		env;
 };
+
 void	handle_sigint(int signum); // FOR TESTING ONLY
 void	print_tokens(t_tokenizer *tokens); // FOR TESTING ONLY
 

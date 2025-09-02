@@ -46,7 +46,7 @@ int	expand_var(t_data *dt, const char *token, char **expanded)
 				return (MALLOC_FAILURE);
 		}
 	}
-	return (0);
+	return (SUCCESS);
 }
 
 void	expander(t_data *dt)

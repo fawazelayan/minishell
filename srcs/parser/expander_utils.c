@@ -85,5 +85,5 @@ int	crt_var(t_env *env, char **expanded, char *key, bool is_special)
 	free(key);
 	if (!*expanded)
 		return (MALLOC_FAILURE);
-	return (0);
+	return (SUCCESS);
 }
