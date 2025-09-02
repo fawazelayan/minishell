@@ -6,25 +6,24 @@
 /*   By: felayan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 20:46:14 by felayan           #+#    #+#             */
-/*   Updated: 2025/07/01 20:48:00 by felayan          ###   ########.fr       */
+/*   Updated: 2025/09/03 00:00:00 by felayan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
 volatile sig_atomic_t	g_sig = 0;
 
-// int	main(int ac, char **av, char **envp)
-// {
-// 	t_data data;
+// THIS IS JUST FOR PRINTING TOKENS FOR DEBUGGING WILL REMOVE LATER
+void	print_tokens(t_tokenizer *tokens)
+{
+	while (tokens)
+	{
+		printf("%s %d %d\n", tokens -> token, tokens -> token_type, tokens -> is_expandable);
+		tokens = tokens -> next;
+	}
+}
 
-// 	(void)ac;
-// 	(void)av;
-// 	ft_memset(&data, 0, sizeof(data));
-// 	start_shell(&data, envp);
-// 	clean_shell(&data, 0);
-// }
-
-// THIS IS A TEST MAIN ONLY TO TEST IF ENV WORKS RIGHT, THE REAL MAIN IS ABOVE
+// THIS IS FOR SIGINT TESTING WILL DO LATER
 void	handle_sigint(int signum)
 {
 	(void)signum;
@@ -36,32 +35,13 @@ void	handle_sigint(int signum)
 
 int	main(int ac, char **av, char **envp)
 {
-	t_env	env;
-	char	*input;
 	t_data	data;
-	ft_memset(&data, 0, sizeof(data));
+	char	*line;
+
 	(void)ac;
 	(void)av;
-	init_env(&env, envp);
-	signal(SIGINT, handle_sigint);
-	while (1)
-	{
-		signal(SIGQUIT, SIG_IGN);
-		input = readline("minishell$ ");
-		if (!input)
-			break ;
-		if (!(input[0] == '\0' || is_empty(input)))
-			add_history(input);
-		tokenizer(input, &data);
-		if (!ft_strncmp(input, "export", 6))
-			print_export(&env);
-		else if (!ft_strncmp(input, "env", 3))
-			print_env(&env);
-		print_tokens(data.tokens);
-		clean_tokens(data.tokens);
-		data.tokens = NULL;
-		free(input);
-	}
-	clean_env(&env, env.entries, 0);
-	return (0);
+	line = NULL;
+	ft_memset(&data, 0, sizeof(data));
+	start_shell(&data, &line, envp);
+	clean_data(&data, SUCCESS);
 }
