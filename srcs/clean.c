@@ -44,10 +44,35 @@ void	clean_tokens(t_tokenizer *tokens)
 	}
 }
 
+void	clean_cmds(t_cmd *cmd)
+{
+	t_cmd	*tmp;
+	int		wrds;
+	int		rdrs;
+
+	while (cmd)
+	{
+		tmp = cmd -> next;
+		wrds = cmd -> word_count;
+		rdrs = cmd -> redir_count;
+		while (wrds--)
+			free(cmd -> tokens[wrds]);
+		while (rdrs--)
+			free(cmd -> redir[rdrs].file);
+		free(cmd -> tokens);
+		free(cmd -> redir);
+		free(cmd);
+		cmd = tmp;
+	}
+}
+
 void	clean_data(t_data *dt, int status)
 {
 	clean_env(&dt -> env, dt -> env.entries, SUCCESS);
 	clean_tokens(dt -> tokens);
+	clean_cmds(dt -> cmds);
+	dt -> tokens = NULL;
+	dt -> cmds = NULL;
 	if (status != SUCCESS)
 		exit(status);
 }

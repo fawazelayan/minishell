@@ -23,6 +23,29 @@ void	print_tokens(t_tokenizer *tokens)
 	}
 }
 
+// THIS IS JUST FOR PRINTING CMDS FOR DEBUGGING WILL REMOVE LATER
+void	print_cmds(t_cmd *cmd)
+{
+	int			i;
+	const char	*redir_symbols[] = {"<<", ">>", ">", "<"};
+
+	while (cmd)
+	{
+		i = 0;
+		while (i < cmd -> word_count)
+			printf("%s ", cmd -> tokens[i++]);
+		printf("\n");
+		i = 0;
+		while (i < cmd -> redir_count)
+		{
+			printf("%s %s ", redir_symbols[cmd->redir[i].type], cmd -> redir[i].file);
+			i++;
+		}
+		printf("\n");
+		cmd = cmd -> next;
+	}
+}
+
 // THIS IS FOR SIGINT TESTING WILL DO LATER
 void	handle_sigint(int signum)
 {

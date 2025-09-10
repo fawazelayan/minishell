@@ -65,7 +65,6 @@ void	expander(t_data *dt)
 				clean_data(dt, MALLOC_FAILURE);
 			free(current -> token);
 			current -> token = expanded;
-			printf(RED"%s\n"RST, current -> token);
 		}
 		current = current -> next;
 	}

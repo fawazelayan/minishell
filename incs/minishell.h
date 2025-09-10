@@ -14,7 +14,7 @@
 
 # define RED	"\033[1;31m"
 # define RST	"\033[0m"
-# define MALLOC_FAILURE -42
+# define MALLOC_FAILURE 42
 # define SUCCESS 0
 # define SYNTAX_ERR -1
 
@@ -82,6 +82,7 @@ struct s_env
 struct s_cmd
 {
 	int		redir_count;
+	int		word_count;
 	int		pipe_fd[2];
 	char	**tokens;
 	t_redir	*redir;
@@ -98,22 +99,29 @@ struct s_data
 	t_env		env;
 };
 
-void	handle_sigint(int signum); // FOR TESTING ONLY
 void	print_tokens(t_tokenizer *tokens); // FOR TESTING ONLY
+void	handle_sigint(int signum); // FOR TESTING ONLY
+void	print_cmds(t_cmd *cmd); // FOR TESTING ONLY
 
 void	start_shell(t_data *dt, char **line, char **envp);
 
 void	clean_env(t_env *env, int count, int exit_status);
 void	clean_data(t_data *dt, int status);
 void	clean_tokens(t_tokenizer *tokens);
+void	clean_cmds(t_cmd *cmd);
 
 int		tokenizer(const char *input, t_data *dt);
 
+int		parsing(t_data *dt, const char *input);
+
+t_cmd	*init_cmd(t_data *dt, t_tokenizer *tokens);
+void	append_cmd(t_data *dt, t_cmd *new);
+
+int		skip_whitesp(const char *s);
 bool	is_redir(const char *token);
 bool	is_pipe(const char *token);
 bool	is_word(const char *token);
 bool	is_empty(const char *s);
-int		skip_whitesp(const char *s);
 
 int		syntax_check(t_tokenizer *tokens, bool quotes_err);
 bool	is_closed_quotes(const char *input, int loc);

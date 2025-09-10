@@ -25,16 +25,15 @@ void	start_shell(t_data *data, char **line, char **envp)
 			printf("exit\n");
 			break ;
 		}
-		if (!(*line[0] == '\0' || is_empty(*line)))
+		if (!is_empty(*line))
 		{
 			add_history(*line);
-			if (tokenizer(*line, data) != -1)
+			if (parsing(data, *line) != SYNTAX_ERR)
 			{
-				expander(data);
-				print_tokens(data -> tokens);
+			//	execution(data);  TO DO LATER
 			}
-			clean_tokens(data ->tokens);
-			data -> tokens = NULL;
+			clean_cmds(data -> cmds);
+			data -> cmds = NULL;
 		}
 		free(*line);
 	}
