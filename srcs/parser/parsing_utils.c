@@ -72,4 +72,5 @@ void	append_cmd(t_data *dt, t_cmd *new)
 		last = get_last_cmd(dt -> cmds);
 		last -> next = new;
 	}
+	dt -> cmd_count++;
 }
