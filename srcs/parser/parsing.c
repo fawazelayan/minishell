@@ -87,7 +87,11 @@ static void	tokens_to_cmd(t_data *dt, t_tokenizer *tokens)
 int	parsing(t_data *dt, const char *input)
 {
 	if (tokenizer(input, dt) == SYNTAX_ERR)
+	{
+		clean_tokens(dt ->tokens);
+		dt -> tokens = NULL;
 		return (SYNTAX_ERR);
+	}
 	expander(dt);
 	print_tokens(dt -> tokens);
 	tokens_to_cmd(dt, dt -> tokens);
